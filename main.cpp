@@ -1,10 +1,10 @@
 #include <SFML/Graphics.hpp>
+#include "Headers/generator.hpp"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({200, 200}), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode({1000, 1000}), "Maze", sf::Style::Titlebar | sf::Style::Close);
     sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
 
     while (window.isOpen())
     {
@@ -15,7 +15,7 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+        drawGrid(window);
         window.display();
     }
 }

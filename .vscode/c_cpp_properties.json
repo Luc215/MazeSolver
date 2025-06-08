@@ -4,8 +4,10 @@
       "name": "Mac",
       "includePath": [
         "${workspaceFolder}/**",
+        "${workspaceFolder}/Headers",
         "/opt/homebrew/opt/sfml/include"
-      ],
+
+        ],
       "defines": [],
       "compilerPath": "/usr/bin/clang++",
       "cStandard": "c17",
