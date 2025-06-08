@@ -3,7 +3,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({1000, 1000}), "Maze", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode({800, 800}), "Maze", sf::Style::Titlebar | sf::Style::Close);
     sf::CircleShape shape(100.f);
 
     while (window.isOpen())
