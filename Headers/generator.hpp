@@ -2,9 +2,13 @@
 #define MAZEDRAWER_HPP
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
-// Declare (not define) your maze drawing function
-void drawGrid(sf::RenderWindow& window);
+//const 
+//const
+extern std::vector<std::vector<float>> cells;
+void grid(sf::RenderWindow& window);
+
 
 #endif
 

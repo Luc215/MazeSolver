@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Headers/generator.hpp"
+#include <iostream>
 
 int main()
 {
@@ -14,7 +15,14 @@ int main()
         }
 
         window.clear();
-        drawGrid(window);
+        grid(window);
         window.display();
     }
+
+    for(int i = 0; i < cells.size(); i++){
+        for(int x = 0; x < cells[i].size(); x++){
+        std::cout << cells[i][x] << " ";
+        }
+    }
+    std::cout << "\n";
 }
