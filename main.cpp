@@ -4,7 +4,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({800, 800}), "Maze", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode({805, 805}), "Maze", sf::Style::Titlebar | sf::Style::Close);
 
     while (window.isOpen())
     {
@@ -19,10 +19,10 @@ int main()
         window.display();
     }
 
-    for(int i = 0; i < cells.size(); i++){
-        for(int x = 0; x < cells[i].size(); x++){
-        std::cout << cells[i][x] << " ";
-        }
-    }
-    std::cout << "\n";
+    // for(int i = 0; i < cells.size(); i++){
+    //     for(int x = 0; x < cells[i].size(); x++){
+    //     std::cout << cells[i][x] << " ";
+    //     }
+    // }
+    // std::cout << "\n";
 }
