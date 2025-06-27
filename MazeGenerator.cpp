@@ -39,15 +39,12 @@ void removeWallBorders(int cell1,int cell2, int cols){
         if(c1 > c2){
             borders[cell1][1] = false;
             borders[cell2][2] = false;
-
         }
         else{
             borders[cell1][2] = false;
             borders[cell2][1] = false;
 
-
         }
-
     }
     //looking horizontally
 
@@ -63,10 +60,7 @@ void removeWallBorders(int cell1,int cell2, int cols){
             borders[cell2][0] = false;
 
         }
-
     }
-
-
 }
 void grid(sf::RenderWindow& window){
     //row and cols const for now. will change when ui introduced. defines how many cells.
@@ -74,6 +68,7 @@ void grid(sf::RenderWindow& window){
     //ok so algo wil go through and break two walls at a time thats what im thinking.
     const int rows = 50;
     const int cols = 50;
+    wallPopulation(rows,cols);
     const float cellLength = 800/rows;
     const float cellWidth  = 800/cols;
     
@@ -89,20 +84,38 @@ void grid(sf::RenderWindow& window){
     borderRight.setFillColor(sf::Color::Black);
 
     cellRect.setFillColor(sf::Color::White);
-        for(int r = 0; r < rows*rows; r++){
+    for(int r = 0; r < rows; r ++){
         for(int c = 0; c < cols; c++){
-            cells.push_back({c * cellLength, r * cellWidth});
-            cellRect.setPosition({cells[r][0], cells[r][1]});
-            borderLeft.setPosition({cells[r][0],cells[r][1]});
-            borderRight.setPosition({cells[r][0]* 2,cells[r][1]});
-            borderTop.setPosition({cells[r][0],cells[r][1]});
-            borderBottom.setPosition({cells[r][0],cells[r][1]*2});
+            int cellIndex = r * cols + c;
+            float xPos = c * cellLength;
+            float yPos = r * cellWidth;
+            cells.push_back({xPos,yPos});
 
+            
+            cellRect.setPosition(sf::Vector2f(xPos, yPos));
             window.draw(cellRect);
-            window.draw(borderRight);
-            window.draw(borderLeft);
-            window.draw(borderBottom);
-            window.draw(borderTop);
+            if(borders[cellIndex][0]){
+                borderTop.setPosition({xPos,yPos});
+                window.draw(borderTop);
+
+            }
+            if(borders[cellIndex][1]){
+                borderLeft.setPosition({xPos,yPos});
+                window.draw(borderLeft);
+
+            }
+            if(borders[cellIndex][2]){
+                borderRight.setPosition({xPos + cellLength,yPos});
+                 window.draw(borderRight);
+
+            }
+            if(borders[cellIndex][3]){
+                borderBottom.setPosition({xPos,yPos + cellWidth});
+                window.draw(borderBottom);
+
+            }
+
+
         }
     }
 

@@ -10,7 +10,7 @@ extern double bottom;
 extern double left;
 extern double right;
 extern std::vector<std::vector<float>> cells;
-extern std::vector<std::vector<int>> borders;
+extern std::vector<std::vector<bool>> borders;
 void grid(sf::RenderWindow& window);
 
 
