@@ -16,7 +16,7 @@ extern std::vector<std::vector<float>> cells;
 extern std::vector<std::vector<bool>> borders;
 extern void grid(sf::RenderWindow& window);
 extern int region_hit(int x, int y, int width, int height,sf::RenderWindow& window);
-extern int button(int id, int x, int y);
+extern int button(int id, int x, int y,sf::RenderWindow& window);
 extern void finish();
 
 

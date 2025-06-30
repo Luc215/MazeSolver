@@ -8,7 +8,7 @@
 sf::Color purple(104,17,151);
 sf::Color darker_purple(65,7,150);
 sf::Color gray(90,96,102);
-sf::RenderWindow window(sf::VideoMode({1005, 805}), "Maze", sf::Style::Titlebar | sf::Style::Close);
+//sf::RenderWindow window(sf::VideoMode({1005, 805}), "Maze", sf::Style::Titlebar | sf::Style::Close);
 //might move later to different file idk
 std::vector<std::vector<float>> cells = {};
 
@@ -159,7 +159,7 @@ int region_hit(int x, int y, int width, int height,sf::RenderWindow& window){
 //like in IMGUI but ima be using variables cus SFML aint like that
 int hot_item = 0;
 int active_item = 0;
-int button(int id, int x, int y){
+int button(int id, int x, int y,sf::RenderWindow& window){
     if(region_hit(x, y, 100, 70, window)){
     hot_item = id;
         if (active_item == 0 && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
@@ -169,14 +169,25 @@ int button(int id, int x, int y){
     sf::RectangleShape button(sf::Vector2f(100,70));
     sf::RectangleShape offset(sf::Vector2f(100,70));
 
-    offset.setFillColor(purple);
+    offset.setFillColor(gray);
     offset.setPosition(sf::Vector2f(x+8,y+8));
     window.draw(offset);
     if(hot_item == id){
-        button.setFillColor(sf::Color::White);
+        button.setFillColor(purple);
+        //on button and pressed
         if(active_item == id){
-            button.setPosition(sf::Vector2f(x+2,y+2));
+            button.setFillColor(darker_purple);
+            button.setPosition(sf::Vector2f(x+5,y+5));
             window.draw(button);
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false){
+            window.clear();
+            grid(window);
+            window.draw(offset);
+            button.setFillColor(purple);
+            button.setPosition(sf::Vector2f(x-2,y-2));
+            window.draw(button);
+            }
+
 
         }
         else{

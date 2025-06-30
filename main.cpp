@@ -16,7 +16,7 @@ int main()
 
         window.clear();
         grid(window);
-        button(1,900,200);
+        button(1,820,75,window);
         window.display();
     }
 
