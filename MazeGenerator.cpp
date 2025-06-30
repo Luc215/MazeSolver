@@ -1,15 +1,27 @@
 #include "SFML/Graphics.hpp"
 #include "Headers/generator.hpp"
 #include <vector>
+#include <random>
+#include <algorithm>
 //using Randomized Kruskals Algo to draw Maze
-// Step one: Draw a grid
-//Step 2:
-
+//need this for button
+sf::Color purple(104,17,151);
+sf::Color darker_purple(65,7,150);
+sf::Color gray(90,96,102);
+sf::RenderWindow window(sf::VideoMode({1005, 805}), "Maze", sf::Style::Titlebar | sf::Style::Close);
 //might move later to different file idk
 std::vector<std::vector<float>> cells = {};
 
 // {top,left,right,bottom}
 std::vector<std::vector<bool>> borders = {};
+
+
+struct Edge {
+    int cell1, cell2;
+};
+
+
+
 
 //here we will truly populate cells with walls. true equals wall should be present. else not
 void wallPopulation(int rows, int cols){
@@ -66,8 +78,8 @@ void grid(sf::RenderWindow& window){
     //row and cols const for now. will change when ui introduced. defines how many cells.
     //why did i decide to use c++? do i hate myself?
     //ok so algo wil go through and break two walls at a time thats what im thinking.
-    const int rows = 50;
-    const int cols = 50;
+    const int rows = 3;
+    const int cols = 3;
     wallPopulation(rows,cols);
     const float cellLength = 800/rows;
     const float cellWidth  = 800/cols;
@@ -121,7 +133,87 @@ void grid(sf::RenderWindow& window){
 
 }
 
-//for when we will implement button to make maze generate or not type shit
-void button(){
+
+//to affect number of cells
+void scroll_wheel(){
 
 }
+
+void kruskals_algo(){
+
+
+}
+//para checking if mouse on button (0 no  1 yes)
+int region_hit(int x, int y, int width, int height,sf::RenderWindow& window){
+    if(sf::Mouse::getPosition(window).x < x ||
+       sf::Mouse::getPosition(window).y < y ||
+       sf::Mouse::getPosition(window).x > x + width ||
+        sf::Mouse::getPosition(window).y > y + height){
+            return 0;
+
+        }
+    return 1;
+
+
+}
+//like in IMGUI but ima be using variables cus SFML aint like that
+int hot_item = 0;
+int active_item = 0;
+int button(int id, int x, int y){
+    if(region_hit(x, y, 100, 70, window)){
+    hot_item = id;
+        if (active_item == 0 && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+            active_item = id;
+        }
+    }
+    sf::RectangleShape button(sf::Vector2f(100,70));
+    sf::RectangleShape offset(sf::Vector2f(100,70));
+
+    offset.setFillColor(purple);
+    offset.setPosition(sf::Vector2f(x+8,y+8));
+    window.draw(offset);
+    if(hot_item == id){
+        button.setFillColor(sf::Color::White);
+        if(active_item == id){
+            button.setPosition(sf::Vector2f(x+2,y+2));
+            window.draw(button);
+
+        }
+        else{
+            button.setPosition(sf::Vector2f(x,y));
+            window.draw(button);
+
+        }
+    }
+    else{
+        button.setFillColor(gray);
+        button.setPosition(sf::Vector2f(x,y));
+        window.draw(button);
+
+        }
+    //is the button active or nah when not pressed
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && 
+      hot_item == id && 
+      active_item == id){
+                return 1;
+
+            }
+
+    return 0;
+    }
+//for cleanliness
+void finish()
+{
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false){
+    active_item = 0;
+  }
+  else{
+    if (active_item == 0)
+      active_item = -1;
+  }
+}
+
+
+
+
+

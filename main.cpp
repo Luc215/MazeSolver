@@ -16,13 +16,8 @@ int main()
 
         window.clear();
         grid(window);
+        button(1,900,200);
         window.display();
     }
 
-    // for(int i = 0; i < cells.size(); i++){
-    //     for(int x = 0; x < cells[i].size(); x++){
-    //     std::cout << cells[i][x] << " ";
-    //     }
-    // }
-    // std::cout << "\n";
 }
