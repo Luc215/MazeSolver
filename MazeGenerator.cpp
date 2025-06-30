@@ -5,8 +5,8 @@
 #include <algorithm>
 //using Randomized Kruskals Algo to draw Maze
 //need this for button
-sf::Color purple(104,17,151);
-sf::Color darker_purple(65,7,150);
+sf::Color purple(89,20,140);
+sf::Color darker_purple(78,17,120);
 sf::Color gray(90,96,102);
 //sf::RenderWindow window(sf::VideoMode({1005, 805}), "Maze", sf::Style::Titlebar | sf::Style::Close);
 //might move later to different file idk
@@ -186,6 +186,7 @@ int button(int id, int x, int y,sf::RenderWindow& window){
             button.setFillColor(purple);
             button.setPosition(sf::Vector2f(x-2,y-2));
             window.draw(button);
+            region_hit(x, y, 100, 70, window);
             }
 
 
@@ -197,7 +198,7 @@ int button(int id, int x, int y,sf::RenderWindow& window){
         }
     }
     else{
-        button.setFillColor(gray);
+        button.setFillColor(purple);
         button.setPosition(sf::Vector2f(x,y));
         window.draw(button);
 
