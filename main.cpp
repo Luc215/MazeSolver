@@ -16,7 +16,14 @@ int main()
 
         window.clear();
         grid(window);
+        //ID: 1 is for stopping and playing algorithms. 2 is for step by step of algorithm. 3 is for reinitializing maze
         button(1,820,75,window);
+        button(2,820,175,window);
+        button(3,820,275,window);
+        // ID will be 4 for scroll.
+        scroll(4,820,375,100,50,window);
+
+        finish();
         window.display();
     }
 

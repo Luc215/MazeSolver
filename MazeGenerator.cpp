@@ -8,7 +8,8 @@
 sf::Color purple(89,20,140);
 sf::Color darker_purple(78,17,120);
 sf::Color gray(90,96,102);
-//sf::RenderWindow window(sf::VideoMode({1005, 805}), "Maze", sf::Style::Titlebar | sf::Style::Close);
+sf::Color lighter_gray(176,174,172);
+sf::Color darker_gray(80,80,80);
 //might move later to different file idk
 std::vector<std::vector<float>> cells = {};
 
@@ -89,13 +90,11 @@ void grid(sf::RenderWindow& window){
     sf::RectangleShape borderBottom(sf::Vector2f(cellLength,5));
     sf::RectangleShape borderLeft(sf::Vector2f(5,cellWidth));
     sf::RectangleShape borderRight(sf::Vector2f(5,cellWidth));
-    cellRect.setFillColor(sf::Color::White);
-    borderTop.setFillColor(sf::Color::Black);
-    borderBottom.setFillColor(sf::Color::Black);
-    borderLeft.setFillColor(sf::Color::Black);
-    borderRight.setFillColor(sf::Color::Black);
-
-    cellRect.setFillColor(sf::Color::White);
+    cellRect.setFillColor(purple);
+    borderTop.setFillColor(sf::Color::White);
+    borderBottom.setFillColor(sf::Color::White);
+    borderLeft.setFillColor(sf::Color::White);
+    borderRight.setFillColor(sf::Color::White);
     for(int r = 0; r < rows; r ++){
         for(int c = 0; c < cols; c++){
             int cellIndex = r * cols + c;
@@ -144,7 +143,7 @@ void kruskals_algo(){
 
 }
 //para checking if mouse on button (0 no  1 yes)
-int region_hit(int x, int y, int width, int height,sf::RenderWindow& window){
+int region_hit(int x, int y, int width, int height, sf::RenderWindow& window){
     if(sf::Mouse::getPosition(window).x < x ||
        sf::Mouse::getPosition(window).y < y ||
        sf::Mouse::getPosition(window).x > x + width ||
@@ -157,13 +156,13 @@ int region_hit(int x, int y, int width, int height,sf::RenderWindow& window){
 
 }
 //like in IMGUI but ima be using variables cus SFML aint like that
-int hot_item = 0;
-int active_item = 0;
+int hot_item_button = 0;
+int active_item_button = 0;
 int button(int id, int x, int y,sf::RenderWindow& window){
     if(region_hit(x, y, 100, 70, window)){
-    hot_item = id;
-        if (active_item == 0 && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
-            active_item = id;
+    hot_item_button = id;
+        if (active_item_button == 0 && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+            active_item_button = id;
         }
     }
     sf::RectangleShape button(sf::Vector2f(100,70));
@@ -172,10 +171,10 @@ int button(int id, int x, int y,sf::RenderWindow& window){
     offset.setFillColor(gray);
     offset.setPosition(sf::Vector2f(x+8,y+8));
     window.draw(offset);
-    if(hot_item == id){
+    if(hot_item_button == id){
         button.setFillColor(purple);
         //on button and pressed
-        if(active_item == id){
+        if(active_item_button == id){
             button.setFillColor(darker_purple);
             button.setPosition(sf::Vector2f(x+5,y+5));
             window.draw(button);
@@ -191,12 +190,14 @@ int button(int id, int x, int y,sf::RenderWindow& window){
 
 
         }
+        //only on button
         else{
             button.setPosition(sf::Vector2f(x,y));
             window.draw(button);
 
         }
     }
+    //not anything
     else{
         button.setFillColor(purple);
         button.setPosition(sf::Vector2f(x,y));
@@ -205,23 +206,89 @@ int button(int id, int x, int y,sf::RenderWindow& window){
         }
     //is the button active or nah when not pressed
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false && 
-      hot_item == id && 
-      active_item == id){
+      hot_item_button == id && 
+      active_item_button == id){
                 return 1;
 
             }
 
     return 0;
     }
+
+//time to make a slider to dictate how many rows and cols. also will be same number
+int hot_item_scroll = 0;
+int active_item_scroll = 0;
+int scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
+    int ypos = ((256-16) * value) / max;
+
+
+    if(region_hit(x+8,y+8+ypos, 16, 16,window)){
+        hot_item_scroll = id;
+        if(active_item_scroll == 0 && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+            active_item_scroll = id;
+        }
+
+        
+    }
+    else{
+        hot_item_scroll = 0;
+        active_item_scroll = 0;
+
+    }
+    sf::RectangleShape scrollbar(sf::Vector2f(32,256+16));
+    scrollbar.setFillColor(gray);
+    sf::RectangleShape thumb(sf::Vector2f(16,16));
+    scrollbar.setPosition(sf::Vector2f(x,y));
+    if(hot_item_scroll == id || active_item_scroll == id){
+        thumb.setFillColor(lighter_gray);
+    }
+    else{
+        thumb.setFillColor(darker_gray);
+
+    }
+    int mousePos = sf::Mouse::getPosition(window).y - (y+8);
+    if(active_item_scroll == id){
+        if(mousePos > y){
+            mousePos = y;
+
+        }
+        if(mousePos < y + 256){
+            mousePos = 255;
+
+        }
+        int v = (mousePos * x) / 255;
+        if(v != value){
+            value = v;
+            thumb.setPosition(sf::Vector2f(x+8,y+8+mousePos));
+            window.draw(scrollbar);
+            window.draw(thumb);
+            return 1;
+        }
+    }
+    thumb.setPosition(sf::Vector2f(x+8,y+8+mousePos));
+    
+    window.draw(scrollbar);
+    window.draw(thumb);
+
+
+    return 0;
+
+
+}
 //for cleanliness
 void finish()
 {
   if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false){
-    active_item = 0;
+    active_item_button = 0;
+    active_item_scroll = 0;
+
   }
   else{
-    if (active_item == 0)
-      active_item = -1;
+    if (active_item_button == 0)
+      active_item_button = -1;
+    else if(active_item_scroll == 0){
+        active_item_scroll = -1;
+    }
   }
 }
 
