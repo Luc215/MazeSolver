@@ -16,6 +16,9 @@ std::vector<std::vector<float>> cells = {};
 // {top,left,right,bottom}
 std::vector<std::vector<bool>> borders = {};
 
+//dont worry bout it
+int y_thumb = 383;
+
 
 struct Edge {
     int cell1, cell2;
@@ -218,26 +221,26 @@ int button(int id, int x, int y,sf::RenderWindow& window){
 //time to make a slider to dictate how many rows and cols. also will be same number
 int hot_item_scroll = 0;
 int active_item_scroll = 0;
-int scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
+void scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
     int ypos = ((256-16) * value) / max;
+    int height = 16;
 
 
-    if(region_hit(x+8,y+8+ypos, 16, 16,window)){
+
+    if(region_hit(x+8,y_thumb, 16,height,window)){
+        height = 255;
         hot_item_scroll = id;
         if(active_item_scroll == 0 && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
             active_item_scroll = id;
         }
-
-        
     }
     else{
         hot_item_scroll = 0;
-        active_item_scroll = 0;
-
     }
     sf::RectangleShape scrollbar(sf::Vector2f(32,256+16));
     scrollbar.setFillColor(gray);
     sf::RectangleShape thumb(sf::Vector2f(16,16));
+    thumb.setPosition(sf::Vector2f(x+8,y_thumb));
     scrollbar.setPosition(sf::Vector2f(x,y));
     if(hot_item_scroll == id || active_item_scroll == id){
         thumb.setFillColor(lighter_gray);
@@ -246,32 +249,27 @@ int scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
         thumb.setFillColor(darker_gray);
 
     }
-    int mousePos = sf::Mouse::getPosition(window).y - (y+8);
     if(active_item_scroll == id){
-        if(mousePos > y){
-            mousePos = y;
+        y_thumb = sf::Mouse::getPosition(window).y - 8;
+        if(y_thumb < 375+16){
+            y_thumb = 375+8;
 
         }
-        if(mousePos < y + 256){
-            mousePos = 255;
+        if(y_thumb > 375+255-16){
+            y_thumb = 375+255-8;
 
         }
-        int v = (mousePos * x) / 255;
+        int v = (y * x) / 255;
         if(v != value){
             value = v;
-            thumb.setPosition(sf::Vector2f(x+8,y+8+mousePos));
-            window.draw(scrollbar);
-            window.draw(thumb);
-            return 1;
         }
+        thumb.setPosition(sf::Vector2f(x+8,y_thumb));
     }
-    thumb.setPosition(sf::Vector2f(x+8,y+8+mousePos));
     
     window.draw(scrollbar);
     window.draw(thumb);
 
 
-    return 0;
 
 
 }

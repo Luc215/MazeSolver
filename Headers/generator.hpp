@@ -20,7 +20,7 @@ extern void grid(sf::RenderWindow& window);
 extern int region_hit(int x, int y, int width, int height,sf::RenderWindow& window);
 extern int button(int id, int x, int y,sf::RenderWindow& window);
 extern void finish();
-extern int scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window);
+extern void scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window);
 
 #endif
 
