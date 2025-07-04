@@ -12,13 +12,17 @@ sf::Color lighter_gray(176,174,172);
 sf::Color darker_gray(80,80,80);
 //might move later to different file idk
 std::vector<std::vector<float>> cells = {};
-
+//dictates number of cells (self explanatory)
+int num_of_cells = 2;
 // {top,left,right,bottom}
 std::vector<std::vector<bool>> borders = {};
 
 //dont worry bout it
 int y_thumb = 383;
 
+sf::Font font;
+font.loadFromFile("PressStart2P-Regular.ttf");
+sf::Text text("("+ num_of_cells + ", " + num_of_cells + ")",font,20);
 
 struct Edge {
     int cell1, cell2;
@@ -27,9 +31,10 @@ struct Edge {
 
 
 
+
 //here we will truly populate cells with walls. true equals wall should be present. else not
-void wallPopulation(int rows, int cols){
-    int totalCells = rows * cols;
+void wallPopulation(){
+    int totalCells = num_of_cells * num_of_cells;
     borders.resize(totalCells);
     for(int index = 0; index < totalCells; index++){
         borders[index].resize(4,true);
@@ -82,9 +87,9 @@ void grid(sf::RenderWindow& window){
     //row and cols const for now. will change when ui introduced. defines how many cells.
     //why did i decide to use c++? do i hate myself?
     //ok so algo wil go through and break two walls at a time thats what im thinking.
-    const int rows = 3;
-    const int cols = 3;
-    wallPopulation(rows,cols);
+    const int rows = num_of_cells;
+    const int cols = num_of_cells;
+    wallPopulation();
     const float cellLength = 800/rows;
     const float cellWidth  = 800/cols;
     
@@ -132,12 +137,6 @@ void grid(sf::RenderWindow& window){
 
         }
     }
-
-}
-
-
-//to affect number of cells
-void scroll_wheel(){
 
 }
 
@@ -250,7 +249,8 @@ void scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
 
     }
     if(active_item_scroll == id){
-        y_thumb = sf::Mouse::getPosition(window).y - 8;
+        int new_y_thumb = sf::Mouse::getPosition(window).y - 8;
+        float current_val = 383;
         if(y_thumb < 375+16){
             y_thumb = 375+8;
 
@@ -259,12 +259,19 @@ void scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
             y_thumb = 375+255-8;
 
         }
-        int v = (y * x) / 255;
-        if(v != value){
-            value = v;
+        float val = 375/100;
+        float normalized_pos = (float)(new_y_thumb - 375 - 8) / (255 - 16);
+        float new_num_cells = 2 + (int)(normalized_pos * 49);
+        if(new_num_cells < 2){
+            new_num_cells = 2;
+        }
+        if (new_num_cells != num_of_cells) {
+            num_of_cells = new_num_cells;
+            y_thumb = new_y_thumb;
         }
         thumb.setPosition(sf::Vector2f(x+8,y_thumb));
-    }
+
+        }
     
     window.draw(scrollbar);
     window.draw(thumb);
@@ -289,8 +296,3 @@ void finish()
     }
   }
 }
-
-
-
-
-
