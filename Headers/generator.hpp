@@ -15,6 +15,7 @@ extern double bottom;
 extern double left;
 extern double right;
 extern int num_of_cells;
+extern sf::Font font;
 extern std::vector<std::vector<float>> cells;
 extern std::vector<std::vector<bool>> borders;
 extern void grid(sf::RenderWindow& window);

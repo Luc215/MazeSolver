@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <string>
 //using Randomized Kruskals Algo to draw Maze
 //need this for button
 sf::Color purple(89,20,140);
@@ -20,9 +21,16 @@ std::vector<std::vector<bool>> borders = {};
 //dont worry bout it
 int y_thumb = 383;
 
-sf::Font font;
-font.loadFromFile("PressStart2P-Regular.ttf");
-sf::Text text("("+ num_of_cells + ", " + num_of_cells + ")",font,20);
+sf::Text make_text(std::string text){
+    static sf::Font font;
+    if(!font.openFromFile("PressStart2P-Regular.ttf")){
+        // I doubt anything will go wrong...
+    }
+    sf::Text text_func(font,text,10);
+    text_func.setPosition(sf::Vector2f(900,450));
+    text_func.setFillColor(sf::Color::White);
+    return text_func;
+}
 
 struct Edge {
     int cell1, cell2;
@@ -272,7 +280,10 @@ void scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
         thumb.setPosition(sf::Vector2f(x+8,y_thumb));
 
         }
-    
+    std::string message = "("+ std::to_string(num_of_cells) + ", " + std::to_string(num_of_cells) + ")"; //message
+
+
+    window.draw(make_text(message));
     window.draw(scrollbar);
     window.draw(thumb);
 
