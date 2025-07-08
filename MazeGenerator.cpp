@@ -26,8 +26,8 @@ sf::Text make_text(std::string text){
     if(!font.openFromFile("PressStart2P-Regular.ttf")){
         // I doubt anything will go wrong...
     }
-    sf::Text text_func(font,text,10);
-    text_func.setPosition(sf::Vector2f(900,450));
+    sf::Text text_func(font,text,15);
+    text_func.setPosition(sf::Vector2f(880,450));
     text_func.setFillColor(sf::Color::White);
     return text_func;
 }
@@ -267,11 +267,14 @@ void scroll(int id, int x, int y, int max, int value,sf::RenderWindow& window){
             y_thumb = 375+255-8;
 
         }
-        float val = 375/100;
+        float val = 375/50;
         float normalized_pos = (float)(new_y_thumb - 375 - 8) / (255 - 16);
-        float new_num_cells = 2 + (int)(normalized_pos * 49);
+        float new_num_cells = 2 + (int)(normalized_pos * 48);
         if(new_num_cells < 2){
             new_num_cells = 2;
+        }
+        if(new_num_cells > 50){
+            new_num_cells = 50;
         }
         if (new_num_cells != num_of_cells) {
             num_of_cells = new_num_cells;
